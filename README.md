@@ -2,16 +2,16 @@ Implementing a neural network from scratch to apply [Lesson 3](https://course.fa
 
 ## Key Terminology
 
-**Neural Network** - A computational model inspired by the human brain's structure
-**Neuron** - A single unit that applies a transformation to its inputs
-**Weights & Biases** - Parameters that are adjusted during training
-**Activation Function** - Non-linear function that introduces complexity into the model
-**ReLU** - Rectified Linear Unit, a common activation function: f(x) = max(0, x)
-**Backpropagation** - Algorithm to calculate gradients used to update weights
-**Forward Pass** - Process of moving data through the network to get predictions
-**Gradient Descent** - Optimization method for finding weights that minimize error
-**Loss Function** - A measure of how far our predictions are from the actual data.
-**Epoch** - One complete pass through the input data
+- **Neural Network** - A computational model inspired by the human brain's structure
+- **Neuron** - A single unit that applies a transformation to its inputs
+- **Weights & Biases** - Parameters that are adjusted during training
+- **Activation Function** - Non-linear function that introduces complexity into the model
+- **ReLU** - Rectified Linear Unit, a common activation function: f(x) = max(0, x)
+- **Backpropagation** - Algorithm to calculate gradients used to update weights
+- **Forward Pass** - Process of moving data through the network to get predictions
+- **Gradient Descent** - Optimization method for finding weights that minimize error
+- **Loss Function** - A measure of how far our predictions are from the actual data.
+- **Epoch** - One complete pass through the input data
 
 ## Project Structure
 
