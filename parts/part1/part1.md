@@ -1,16 +1,22 @@
 # Project Setup & Linear Model
 
-## Setup
+For each part, I'll lay out a rough outline of what I should do which is a combination of what I learned from watching Jeremy Howard
+build with the Microsoft Excel spreadsheet and [claude.ai](https://claude.ai/new)'s help. I've asked it not to give any "answers" (e.g., the correct code)
+but rather to guide me along like a tutor and hinting along the way should I need any assistance.
+
+## Initial Outline
+
+### Setup
 
 1. Create a new Python project directory
 2. Set up a virtual environment
 3. Install basic dependencies: numpy and matplotlib
 
-## First Component: A Simple Linear Model
+### First Component: A Simple Linear Model
 
 The most basic neural model is just a linear function: `y = wx + b`
 
-### Task:
+#### Tasks:
 
 - Create a file `part1.py`
 - Generate some simple data (e.g., points on a line with some noise)
@@ -20,13 +26,15 @@ The most basic neural model is just a linear function: `y = wx + b`
   - Calculating loss (mean squared error)
   - Manually update parameters
 
-### Questions to explore:
+#### Questions to explore:
 
 - What happens if we change the initial weights?
 - How would we calculate the error/loss?
 - Can we visualize your data and predictions?
 
-## Where do Neural Networks fit in the A.I. umbrella?
+## Findings
+
+### Where do Neural Networks fit in the A.I. umbrella?
 
 ```mermaid
 graph TD
@@ -41,3 +49,106 @@ graph TD
     NN --> RNN[Recurrent Neural Networks]
     NN --> TR[Transformers]
 ```
+
+### Project Setup
+
+I've been using [uv](https://docs.astral.sh/uv/) to set up Python projects so that's what I went ahead and did here. I was first put on to uv when I came
+across a [talk](https://www.youtube.com/watch?v=gSKTfG1GXYQ) given by Charlie Marsh, found of Astral, on the Jane Street Youtube channel.
+
+#### Steps
+
+- created a `pyproject.toml` which contains project metadata
+- created a virtual env with `uv` and activated it. This creates an environment that scopes everything I do to the project.
+- added dependencies by doing `uv sync`
+
+### Implementation
+
+Here's where I do actual programming and attempt to build a linear model. Claude gave me an outline which is separates the task into parts that I can sort of
+"fill in" like a homework sheet. What I'll go ahead and do from here is plan out what it is I'm exactly trying to do and see if I can complete each task from first principles.
+I'll do my best to translate what I think we're supposed to do to code which will have a lot of guess & test runs in the CLI. I'll also have to research a bunch of things
+that I'm unfamiliar with so there's that.
+
+```python
+# Import necessary libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 1. Generate sample data
+# TODO: Create x values and corresponding y values following a linear pattern with noise
+# 2. Initialize parameters
+# TODO: Create initial values for weight and bias
+
+# 3. Define model functions
+# TODO: Implement forward pass function
+# TODO: Implement loss calculation function
+# TODO: Implement parameter update function
+
+# 4. Training loop
+# TODO: Implement iterations of forward pass, loss calculation, and parameter updates
+
+# 5. Visualization
+# TODO: Plot original data points and final regression line
+# TODO: Plot loss over iterations
+```
+
+Looking at the outline, the file looks to be broken down into logical parts of the linear model. I can understand each part on its own but I'm not quite sure I understand what a _linear
+model_ is. From watching the lecture and building the spreadsheet, what I think it does is given a set of data points it tries to find the line of best fit which is how it will do predictions.
+
+After some research, I got a ton of information and here's the definition I've summarized for myself: A linear model is essentially drawing a straight line through the data to make predictions.
+It assumes a **linear relationship** between inputs and outputs. It seem hand-wavy 👋 here, but since I've prefer to learn from a top-down approach (also recommended by the fast.ai course) the lower
+level details will make sense later on. For others reading this that prefer a bottom-up approach, it might be helpful to see the content in [Andrew Ng's course](https://www.coursera.org/specializations/machine-learning-introduction).
+
+Okay so we got the big picture and sort of get the gist of what we're trying to do. Let's generate some sample data and initialize the parameters.
+
+```python
+# Import necessary libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 1. Generate sample data
+np.random.seed(42)  # For reproducibility
+
+# Parameters
+n_samples = 100
+true_slope = 2.5
+true_intercept = 5
+noise_level = 3
+
+# Generate x values
+X = np.random.uniform(0, 10, n_samples)
+
+# Generate y values with some noise to mimic "real world" phenomenon
+y = true_slope * X + true_intercept + np.random.normal(0, noise_level, n_samples)
+
+# Split into training and testing sets (80% train, 20% test)
+split_idx = int(0.8 * n_samples)
+X_train, X_test = X[:split_idx], X[split_idx:]
+y_train, y_test = y[:split_idx], y[split_idx:]
+
+# 2. Initialize parameters. In training, these random values will be adjusted through gradient descent
+weight = np.random.randn()  # coefficient/slope
+bias = np.random.randn()  # intercept
+
+# 3. Define model functions
+# TODO: Implement forward pass function
+# TODO: Implement loss calculation function
+# TODO: Implement parameter update function
+
+# 4. Training loop
+# TODO: Implement iterations of forward pass, loss calculation, and parameter updates
+
+# 5. Visualization
+# TODO: Plot original data points and final regression line
+# TODO: Plot loss over iterations
+```
+
+So a lot just happened. The bit of code to generate sample data does this:
+
+1. Sets a fixed random seed for reproducibility
+2. Generates 100 random x-values betwen 0-10
+3. Creates y-values follwing `y= 2.5x + 5 + noise`
+4. The noise uses a normal distribution (aka Gaussian distribution) with standard deviation 3
+5. The last part splits our data into training (80%) and testing (20%) sets
+
+Most stuff we may recognize from high school math. I wasn't so great at math but the only unfamiliar thing to me was "Gaussian Distribution" which I got the gist of through Googling and some
+short Youtube videos.
