@@ -1,5 +1,7 @@
 Implementing a neural network from scratch to apply [Lesson 3](https://course.fast.ai/Lessons/lesson3.html) or [Chapter 4](https://github.com/fastai/fastbook/blob/master/04_mnist_basics.ipynb) of the fast.ai course "Practical Deep Learning for Coders".
 
+Going to create a tutorial for myself (and perhaps for others) to learn how to build a neural network from scratch. Inspiration from this [SQLite Clone Tutorial](https://cstack.github.io/db_tutorial/)
+
 ## Key Terminology
 
 - **Neural Network** - A computational model inspired by the human brain's structure

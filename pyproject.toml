@@ -1,0 +1,14 @@
+[project]
+name = "neural-net-from-scratch"
+version = "0.1.0"
+description = "Building a neural network from scratch"
+requires-python = ">=3.8"
+dependencies = [
+    "numpy",
+    "matplotlib",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+EOF
