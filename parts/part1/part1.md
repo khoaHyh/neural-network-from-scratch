@@ -53,7 +53,7 @@ graph TD
 ### Project Setup
 
 I've been using [uv](https://docs.astral.sh/uv/) to set up Python projects so that's what I went ahead and did here. I was first put on to uv when I came
-across a [talk](https://www.youtube.com/watch?v=gSKTfG1GXYQ) given by Charlie Marsh, found of Astral, on the Jane Street Youtube channel.
+across a [talk](https://www.youtube.com/watch?v=gSKTfG1GXYQ) given by Charlie Marsh, founder of Astral, on the Jane Street Youtube channel.
 
 #### Steps
 
@@ -152,3 +152,47 @@ So a lot just happened. The bit of code to generate sample data does this:
 
 Most stuff we may recognize from high school math. I wasn't so great at math but the only unfamiliar thing to me was "Gaussian Distribution" which I got the gist of through Googling and some
 short Youtube videos.
+
+Next I have to implement "#3. Define model functions". I have some questions:
+
+- what are model functions?
+- what is forward pass, loss calculation, and parameter update?
+  - why are these necessary?
+
+So model functions are the core math ops that define how a neural network (or any ML model) works. These functions are revolve around predictions.
+We can relate the 3 functions to what Jeremy did in the Excel spreadsheet exercise.
+
+- **Forward Pass** - calculates the model's prediction by applying the current parameters (weight & bias) to the input data.
+  - in the spreadsheet, this would be the cells where we multiply our inputs by weights and add bias
+- **Loss Calculation** - measures the error between our predictions and actual values
+  - in the spreadsheet, this would be the cells that calculate how far off our predictions are from the actual values
+- **Parameter Update** - adjusts the model parameters (weight & bias) to reduce the loss
+  - in the spreadsheet, this would be the cells where we multiply our inputs by weights and add bias
+
+Given the definitions and what was done in the spreadsheet exercise, we can translate it to Python like so:
+
+```python
+# 3. Define model functions
+def forward_pass(x: float, weight: float, bias: float) -> float:
+    return x * weight + bias
+
+
+def loss_calculation(y_pred: float, y_true: float) -> float:
+    return np.mean((y_pred - y_true) ** 2)
+
+
+def parameter_update(
+    w: float, b: float, x: float, y: float, y_pred: float, learning_rate: float
+) -> Tuple[int, int]:
+    num_inputs = len(x)
+    derivative_weight = -2 / num_inputs * np.sum(x * (y - y_pred))
+    derivative_bias = -2 / num_inputs * np.sum(y - y_pred)
+
+    weight = w - learning_rate * derivative_weight
+    bias = b - learning_rate * derivative_bias
+
+    return (weight, bias)
+```
+
+The first two functions, `forward_pass` and `loss_calculation`, were straightforward. I didn't quite remember what derivatives were so I had to look up
+what they were before translating it to Python. That's another math foundation added to my pile of things to re-visit after this 😅.
