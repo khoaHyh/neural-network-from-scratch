@@ -30,3 +30,10 @@ Going to create a tutorial for myself (and perhaps for others) to learn how to b
 - Create a simple neural network from scratch
 - Understand the fundamental components
 - Build incrementally to see how each piece contributes
+
+## TODOs
+
+- [] create the jupyter notebook counterpart to the part\*.py files
+- [] refactor writing to include:
+  - steps the reader should take
+  - steps I took (hidden behind spoiler filter)

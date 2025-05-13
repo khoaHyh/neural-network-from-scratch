@@ -60,7 +60,6 @@ def parameter_update(
 
 
 # 4. Training loop
-# TODO: Implement iterations of forward pass, loss calculation, and parameter updates
 # Hyperparameters
 learning_rate = 0.01
 iterations = 1000
