@@ -1,5 +1,5 @@
 # Import necessary libraries
-from typing import Tuple
+from typing import tuple
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -29,7 +29,7 @@ bias = np.random.randn()  # intercept
 
 
 # 3. Define model functions
-def forward_pass(x: float, weight: float, bias: float) -> float:
+def forward_pass(x: float, weight: float, bias: float) -> np.ndarray:
     return x * weight + bias
 
 
@@ -39,7 +39,7 @@ def loss_calculation(y_pred: float, y_true: float) -> float:
 
 def parameter_update(
     w: float, b: float, x: float, y: float, y_pred: float, learning_rate: float
-) -> Tuple[int, int]:
+) -> tuple[int, int]:
     num_inputs = len(x)
     derivative_weight = -2 / num_inputs * np.sum(x * (y - y_pred))
     derivative_bias = -2 / num_inputs * np.sum(y - y_pred)
@@ -52,7 +52,33 @@ def parameter_update(
 
 # 4. Training loop
 # TODO: Implement iterations of forward pass, loss calculation, and parameter updates
+# Hyperparameters
+learning_rate = 0.01
+iterations = 1000
+
+loss_history = []
+
+for i in range(iterations):
+    y_pred = forward_pass(X_train, weight, bias)
+    loss = loss_calculation(y_pred, y_train)
+    loss_history.append(loss)
+
+    weight, bias = parameter_update(
+        weight, bias, X_train, y_train, y_pred, learning_rate
+    )
+
+    if (i + 1) % 100 == 0:
+        print(
+            f"Iteration {i + 1}/{iterations}, Loss: {loss:.4f}, Weight: {weight:.4f}, Bias: {bias:.4f}"
+        )
+
+print(f"Final parameters: Weight = {weight:.4f}, Bias = {bias:.4f}")
+print(f"True parameters: Weight = {true_slope:.4f}, Bias = {true_intercept:.4f}")
 
 # 5. Visualization
 # TODO: Plot original data points and final regression line
 # TODO: Plot loss over iterations
+
+
+# 6. (Optional) Do this in a jupyter notebook
+# TODO: convert this python script to a jupyter notebook to test inputs and outputs at each step

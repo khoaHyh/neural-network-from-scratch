@@ -166,8 +166,7 @@ We can relate the 3 functions to what Jeremy did in the Excel spreadsheet exerci
   - in the spreadsheet, this would be the cells where we multiply our inputs by weights and add bias
 - **Loss Calculation** - measures the error between our predictions and actual values
   - in the spreadsheet, this would be the cells that calculate how far off our predictions are from the actual values
-- **Parameter Update** - adjusts the model parameters (weight & bias) to reduce the loss
-  - in the spreadsheet, this would be the cells where we multiply our inputs by weights and add bias
+- **Parameter Update** - adjusts the model parameters (weight & bias) to reduce the loss in the spreadsheet, this would be the cells where we multiply our inputs by weights and add bias
 
 Given the definitions and what was done in the spreadsheet exercise, we can translate it to Python like so:
 
@@ -195,4 +194,28 @@ def parameter_update(
 ```
 
 The first two functions, `forward_pass` and `loss_calculation`, were straightforward. I didn't quite remember what derivatives were so I had to look up
-what they were before translating it to Python. That's another math foundation added to my pile of things to re-visit after this 😅.
+what they were before translating it to Python. The derivative tells us how much `y` changes when `x` changes. Derivatives are used to minimize
+the error between predictions and actual values. They guide the learning process by showing which direction to adjust parameters to reduce error.
+
+#### Quick note: Gradient Descent
+
+_Gradient descent_ tries to find the minimum of the loss function by adjusting model parameters. Imagine you're in a mountain valley surrounded by fog. Your
+goal is to reach the lowest point in the valley, but you can't see anything.
+
+Your likely steps would be:
+
+1. **Feel the slope.** The gradient tells you the direction of the descent and the steepness of that descent.
+2. **Take a step.** The size of your step is important. If it's too small, you'll take forever to reach the bottom. If it's too big, you might overshoot.
+3. **Repeat.** Iterating let's us repeatedly adjust our direction and steepness while taking count of how close we are to the bottom. We do this until we hit the valley.
+
+So taking it back to the model, mathematically, we are:
+
+- calculating the gradient (feel the slope)
+- move in the appropriate direction proportional to both the gradient and the learning rate (take a step)
+- iterate (repeat)
+
+Implementing iterations of forward pass, loss calculation and parameter updates is paralleled by these things in the spreadsheet exercise:
+
+- Excel cells that calculate predictions became our `forward_pass` function
+- The cells that calculate error became our `loss_calculation` function
+- The cells that update weights became our `parameter_update` function
