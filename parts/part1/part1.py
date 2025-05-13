@@ -1,6 +1,6 @@
 # Import necessary libraries
-from typing import tuple
 import numpy as np
+import numpy.typing as npt
 import matplotlib.pyplot as plt
 
 # 1. Generate sample data
@@ -29,18 +29,27 @@ bias = np.random.randn()  # intercept
 
 
 # 3. Define model functions
-def forward_pass(x: float, weight: float, bias: float) -> np.ndarray:
+def forward_pass(
+    x: npt.NDArray[np.float64], weight: float, bias: float
+) -> npt.NDArray[np.float64]:
     return x * weight + bias
 
 
-def loss_calculation(y_pred: float, y_true: float) -> float:
+def loss_calculation(
+    y_pred: npt.NDArray[np.float64], y_true: npt.NDArray[np.float64]
+) -> np.floating:
     return np.mean((y_pred - y_true) ** 2)
 
 
 def parameter_update(
-    w: float, b: float, x: float, y: float, y_pred: float, learning_rate: float
-) -> tuple[int, int]:
-    num_inputs = len(x)
+    w: float,
+    b: float,
+    x: np.ndarray,
+    y: npt.NDArray[np.float64],
+    y_pred: npt.NDArray[np.float64],
+    learning_rate: float,
+) -> tuple[float, float]:
+    num_inputs = x.size
     derivative_weight = -2 / num_inputs * np.sum(x * (y - y_pred))
     derivative_bias = -2 / num_inputs * np.sum(y - y_pred)
 
