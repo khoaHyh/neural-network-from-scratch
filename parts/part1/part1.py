@@ -84,9 +84,4 @@ print(f"Final parameters: Weight = {weight:.4f}, Bias = {bias:.4f}")
 print(f"True parameters: Weight = {true_slope:.4f}, Bias = {true_intercept:.4f}")
 
 # 5. Visualization
-# TODO: Plot original data points and final regression line
-# TODO: Plot loss over iterations
-
-
-# 6. (Optional) Do this in a jupyter notebook
-# TODO: convert this python script to a jupyter notebook to test inputs and outputs at each step
+# NOTE: This part is done in the corresponding jupyter notebook in the current directory.
