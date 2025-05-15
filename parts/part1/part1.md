@@ -219,3 +219,14 @@ Implementing iterations of forward pass, loss calculation and parameter updates 
 - Excel cells that calculate predictions became our `forward_pass` function
 - The cells that calculate error became our `loss_calculation` function
 - The cells that update weights became our `parameter_update` function
+
+#### Visualization
+
+This section was the fun part because I got to see the results of what I've built so far and helped things "click". It was similar to writing a bunch of frontend
+code and seeing the visual changes in the UI. This was pure matplotlib and their docs tell you a lot. They give lots of examples on their sites and you can search
+online for many cases not covered in their documentation.
+
+Plotting the training data vs test data on the scatter plot was cool to see the distribution of which values were selected for training vs testing. Seeing the
+line of best fit compared to the true line gives us an indicator of how close our model's predictions were. The loss history taught us that in the beginning, the
+values are random and way-off but they take a sharp turn towards the right direction (gradient descent!!). Whether this is true for all models or even all linear
+regression models, I'll have to research that. For now, that's part 1 👍🏻.
