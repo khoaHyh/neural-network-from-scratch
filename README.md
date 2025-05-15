@@ -17,13 +17,10 @@ Going to create a tutorial for myself (and perhaps for others) to learn how to b
 
 ## Project Structure
 
-1. Project Setup & Linear Model
-2. Gradient Descent
-3. Adding Non-Linearity with ReLU
-4. Multi-Layer Networks
-5. Matrix Operations
-6. Putting It All Together
-7. Testing & Extensions
+1. Linear Model & Gradient Descent
+2. Non-Linearity (w/ ReLU) & Multi-Layer Networks
+3. Matrix Operations & Completing the Network
+4. (Optional) Testing & Extensions
 
 ## Project Goals
 
@@ -33,7 +30,8 @@ Going to create a tutorial for myself (and perhaps for others) to learn how to b
 
 ## TODOs
 
-- [] create the jupyter notebook counterpart to the part\*.py files
-- [] refactor writing to include:
-  - steps the reader should take
-  - steps I took (hidden behind spoiler filter)
+[] refactor writing to include:
+
+- steps the reader should take
+- steps I took (hidden behind spoiler filter)
+- more "tutorial" friendly structure and language

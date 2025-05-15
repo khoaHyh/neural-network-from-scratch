@@ -1,4 +1,4 @@
-# Project Setup & Linear Model
+# Part 1. Linear Model & Gradient Descent
 
 For each part, I'll lay out a rough outline of what I should do which is a combination of what I learned from watching Jeremy Howard
 build with the Microsoft Excel spreadsheet and [claude.ai](https://claude.ai/new)'s help. I've asked it not to give any "answers" (e.g., the correct code)
