@@ -51,8 +51,29 @@ that each activation function is great at and not so great at so a quick prompt 
 
 #### Vanishing/exploding gradients
 
+A **gradient** tells us how much and in what direction to adjust each weight to reduce the error. These gradient problems both occur during _backpropagation_ and makes learning at the early layers slow and introduces the possibility of the model failing to converge.
+
+**Vanishing gradient**: During backpropagation, the gradients become very small as a result of repeated multiplication of small numbers (<1). This occurs with the sigmoid and tanh activation functions because these functions have a range of 0-1 and -1 to 1, this makes the derivatives approach 0.
+As a result, the gradient descent algorithm never converges to the optimal solution.
+**Exploding gradient**: During backpropagation, the gradients become very large and we end up with big weight updates hich leads to the divergence of the gradient descent algo. This is a resultA of the _initial weights_ assigned to the neural networks creating large losses. This leads to unstable training, erratic weight updates, and numerical overflow.
+
 #### Backpropagation algo
+
+Backpropagation (or backward pass) is essentially a method to enable the neural network to learn from its mistakes. Conceptually, backpropagation is applying the chain rule of Calculus which tells us how to differentiate composite functions.
+
+To understand this methodically, let's spell out the steps. The steps for backpropagation would be:
+
+1. forward pass - computes output
+2. calculate loss
+3. backpropagation (backward pass) - error is "propagated" backward through the layers of the network
+4. gradient calculation - at each layer, the gradient of the error, with respect to the weights and biases, is computed
+5. weight updates - weights and biases are adjusted based on calculated gradients using an algo like gradient descent
+6. iteration - next forward pass happens with w/ updated weights and repeats the process under the desired performance is reached
 
 #### Hidden layer neuron
 
 #### (Bonus finding) The XOR problem
+
+XOR (exclusive OR) is a binary operation that returns 1 if the two inputs are different; if they are the same, the output is 0. The problem is that a single-layer perceptron cannot solve this problem because the data is not linearly separable.
+In other words, we can't draw a single straight line to separate the data points to classify all inputs. There's some underlying math to prove this (some good research will demonstrate this) but we can understand that until we add non-linearity
+we are limited in the problems we can solve.
