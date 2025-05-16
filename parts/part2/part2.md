@@ -31,3 +31,28 @@ To relate back to the Excel-based model:
 - Backpropagation would calculate how each cell's value affects the final error
 
 ## Findings
+
+#### Why non-linearity matters
+
+It matters because it allows neural networks to model complex, real-world data and intricate relationships. In a scenario without non-linearity,
+if you stack linear layers it doesn't matter how many layers you have, you would just get a linear function which is essentially a single linear layer.
+
+#### ReLU vs. other activation functions
+
+To simplify comparisons, the other activation functions that ReLU is often compared to are Tanh and sigmoid. Let's define the characteristics of these 3 activation functions:
+
+- **ReLU (Rectified Linear Unit)**: Most commonly used and defined as `f(x) = max(o, x)`
+- **sigmoid**: Squashes values between 0 and 1, historically important but prone to vanishing gradients
+- **Tanh**: Similar to sigmoid but outputs values between -1 and 1, zero-centered
+
+Just some quick research online and I've learned that the strong points for **ReLU** are that it is computationally efficient, has no vanishing gradient problem and
+because it sets negative values to 0, this leads to sparsity which helps with model generalization (but could maybe hinder some other things?). There are some other cool problems
+that each activation function is great at and not so great at so a quick prompt into your preferred LLM will tell you a lot about that.
+
+#### Vanishing/exploding gradients
+
+#### Backpropagation algo
+
+#### Hidden layer neuron
+
+#### (Bonus finding) The XOR problem
