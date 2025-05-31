@@ -41,7 +41,7 @@ if you stack linear layers it doesn't matter how many layers you have, you would
 
 To simplify comparisons, the other activation functions that ReLU is often compared to are Tanh and sigmoid. Let's define the characteristics of these 3 activation functions:
 
-- **ReLU (Rectified Linear Unit)**: Most commonly used and defined as `f(x) = max(o, x)`
+- **ReLU (Rectified Linear Unit)**: Most commonly used and defined as `f(x) = max(0, x)` (negative numbers become 0)
 - **sigmoid**: Squashes values between 0 and 1, historically important but prone to vanishing gradients
 - **Tanh**: Similar to sigmoid but outputs values between -1 and 1, zero-centered
 
@@ -101,9 +101,18 @@ the model learns the training data too well which resuts in poor performance on 
   - medical image analysis
   - facial recognition
 - CNNs have 3 main types of hidden layers:
-  - convolutional layers
-  - pooling layers
-  - fully-connected layers
+  - convolutional layers - use feature extraction to perform the main "work" of the CNN
+  - pooling layers - simplifies the work of the convolutional layers, losing data in the process but gaining a more efficient and less complex output
+  - fully-connected layers - every node in this layer connects to every node in the previous layer to mape info gained form the previous two layers (input and hidden), classifying for output
+
+
+**Hidden layers of generative adversarial neural networks (GANs)**
+
+• Competitive Structure - GANs consist of two neural networks (generator and discriminator) that compete against each other - the generator tries to create fake data so realistic that the discriminator cannot distinguish it from real training data, while the discriminator tries to identify the fakes.
+• Learning Through Competition - The adversarial game drives continuous improvement in both networks, as each tries to outperform the other, leading to progressively better fake data generation and detection capabilities over time.
+• Training Process - Both networks use backpropagation and access the same training dataset, with the generator "winning" when it creates output so convincing that the discriminator fails to detect it as fake, resulting in novel, realistic generated content.
+• Flexible Architecture- The specific implementation of hidden layers varies depending on the GAN variant (such as DCGANs using convolutional layers), but the core competitive principle remains consistent across different model types.
+
 
 ### (Bonus finding) The XOR problem
 

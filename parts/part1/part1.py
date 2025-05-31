@@ -1,4 +1,3 @@
-# Import necessary libraries
 import numpy as np
 import numpy.typing as npt
 import matplotlib.pyplot as plt
@@ -6,7 +5,6 @@ import matplotlib.pyplot as plt
 # 1. Generate sample data
 np.random.seed(42)  # For reproducibility
 
-# Parameters
 n_samples = 100
 true_slope = 2.5
 true_intercept = 5
