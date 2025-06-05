@@ -9,7 +9,7 @@ Going to create a tutorial for myself (and perhaps for others) to learn how to b
 - **Weights & Biases** - Parameters that are adjusted during training
 - **Activation Function** - Non-linear function that introduces complexity into the model
 - **ReLU** - Rectified Linear Unit, a common activation function: f(x) = max(0, x)
-- **Backpropagation** - Algorithm to calculate gradients used to update weights
+- **Backpropagation** - Algorithm to calculate gradients used to update weights 
 - **Forward Pass** - Process of moving data through the network to get predictions
 - **Gradient Descent** - Optimization method for finding weights that minimize error
 - **Loss Function** - A measure of how far our predictions are from the actual data.
@@ -35,3 +35,8 @@ Going to create a tutorial for myself (and perhaps for others) to learn how to b
 - steps the reader should take
 - steps I took (hidden behind spoiler filter)
 - more "tutorial" friendly structure and language
+
+## Some useful commands for myself
+
+#### Convert python file to jupyter notebook
+`jupytext --to notebook part2.py --output part2.ipynb` 

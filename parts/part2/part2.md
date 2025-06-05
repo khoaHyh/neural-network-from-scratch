@@ -121,3 +121,42 @@ In other words, we can't draw a single straight line to separate the data points
 we are limited in the problems we can solve.
 
 Oh btw, _perceptron_ is simply an artificial neuron that is capable of learning. Frank Rosenblatt built the first perceptron called "Mark I Perceptron".
+
+### Diagram of `part2.py`
+
+Leaving a diagram here to illustrate the flow of data and calculations. I'll have to update this with more thoughts during this exercise after I finish the visualization in jupyter notebooks.
+
+```mermaid
+graph TD
+    A[Input Data: X] --> B[Hidden Layer]
+    B --> B1[Linear Transform: X * w + b]
+    B1 --> B2[Raw Output: z1]
+    B2 --> B3[ReLU Activation: max 0 or z1]
+    B3 --> B4[Activated Output: a1]
+    
+    B4 --> C[Output Layer]
+    C --> C1[Linear Transform: a1 * w2 + b2]
+    C1 --> C2[Final Predictions: y_pred]
+    
+    C2 --> D[Loss Calculation]
+    D --> D1[MSE: mean of squared errors]
+    
+    D1 --> E[Backpropagation]
+    E --> E1[Calculate Output Gradients]
+    E1 --> E2[Calculate Hidden Gradients<br/>Chain Rule]
+    
+    E2 --> F[Parameter Updates]
+    F --> F1[Update w2, b2]
+    F --> F2[Update w, b]
+    
+    F1 --> G[Next Iteration]
+    F2 --> G
+    G --> A
+    
+    style A fill:#e1f5fe
+    style B4 fill:#fff3e0
+    style C2 fill:#f3e5f5
+    style D1 fill:#ffebee
+    style E2 fill:#e8f5e8
+    style F fill:#fff8e1
+```
