@@ -1,6 +1,5 @@
 import numpy as np
 import numpy.typing as npt
-import matplotlib.pyplot as plt
 
 # 1. Generate sample data
 np.random.seed(42)  # For reproducibility
@@ -40,8 +39,8 @@ def loss_calculation(
 
 
 def parameter_update(
-    w: float,
-    b: float,
+    curr_weight: float,
+    curr_bias: float,
     x: np.ndarray,
     y: npt.NDArray[np.float64],
     y_pred: npt.NDArray[np.float64],
@@ -51,10 +50,10 @@ def parameter_update(
     derivative_weight = -2 / num_inputs * np.sum(x * (y - y_pred))
     derivative_bias = -2 / num_inputs * np.sum(y - y_pred)
 
-    weight = w - learning_rate * derivative_weight
-    bias = b - learning_rate * derivative_bias
+    new_weight = curr_weight - learning_rate * derivative_weight
+    new_bias = curr_bias - learning_rate * derivative_bias
 
-    return (weight, bias)
+    return (new_weight, new_bias)
 
 
 # 4. Training loop
