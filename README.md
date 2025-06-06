@@ -17,10 +17,40 @@ Going to create a tutorial for myself (and perhaps for others) to learn how to b
 
 ## Project Structure
 
+### Overview
+
 1. Linear Model & Gradient Descent
 2. Non-Linearity (w/ ReLU) & Multi-Layer Networks
 3. Matrix Operations & Completing the Network
 4. (Optional) Testing & Extensions
+
+### Part 1: Linear Model & Gradient Descent
+
+- Set up project
+- Created a simple linear model
+- Implemented gradient descent for parameter updates
+- Trained the model and begun visualizing results
+
+### Part 2: Non-Linearity & Multi-Layer Networks
+
+- Adding non-linearity via ReLU, which is the first step toward neural networks
+- Understand activation functions, adding multiple layers is a logical extension
+- Use backpropagation concepts which build directly on our gradient descent work
+
+### Part 3: Matrix Operations & Complete Network
+
+- Matrix operations make multi-layer networks efficient
+- They enable batch processing of multiple examples
+- Implement matrix ops so we can build a flexible, complete neural network class
+
+### Part 4: Testing & Extensions
+
+This remains as its own section for exploring and extending our neural network:
+
+- Testing on standard datasets (e.g., MNIST)
+- Adding regularization to prevent overfitting
+- Implementing additional features like momentum, learning rate scheduling
+- Comparing performance to frameworks like TensorFlow/PyTorch
 
 ## Project Goals
 
@@ -30,7 +60,7 @@ Going to create a tutorial for myself (and perhaps for others) to learn how to b
 
 ## TODOs
 
-[] refactor writing to include:
+refactor writing to include:
 
 - steps the reader should take
 - steps I took (hidden behind spoiler filter)
