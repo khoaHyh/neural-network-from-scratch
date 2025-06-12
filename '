@@ -1,0 +1,11 @@
+# Neural Network from Scratch - Part 3: Matrix Operations & Complete Network
+
+In part 3, I'll be improving the model by adding matrix multiplication and overall making the neural network more mature.
+
+## Prep
+
+### Learning Objectives
+
+- **Understand how matrix operations work in neural networks** - how do matrices enable batch processing and how are they efficient?
+- **Understand vectorization** - what is the difference between processing one example at a time vs processing batches?
+- **Numpy broadcasting** - crucial for implementing matrix operations efficiently
