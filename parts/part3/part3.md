@@ -32,7 +32,7 @@ Matrix multiplication is one of the most important mathematical operations in de
 - **pattern recognition** - matrices can rotate, scale and project data into new dimensional spaces which makes patterns more obvious to spot
 - **hardware optimization** - our CPUs/GPUS are specifically designed for matrix operations, making them orders of magnitude faster than equivalent loop-based ops
 
-The **batch** part comes in when we handle multiple examples simultaneously. Matrix multiplication can handle multiple neurons simultanously so we get the mathematical efficiency + hardware utilization benefits together. This is like having a factory assembly line that processing multiple products at a time instead of one-by-one.
+The **batch** part comes in when we handle multiple examples simultaneously. Matrix multiplication can handle multiple neurons simultanously so we get the mathematical efficiency + hardware utilization benefits together. This is like having a factory assembly line that processes multiple products at a time instead of one-by-one.
 
 ### Vectorization
 
