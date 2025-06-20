@@ -10,19 +10,19 @@ import numpy.typing as npt
 - [x] Ensure train/test split can handle matrix data
 
 ### 2. **Design Network Architecture**
-- [ ] Define network structure: input_size → hidden_size → output_size
-- [ ] Plan weight matrix dimensions (hint: `(input_size, hidden_size)` for first layer)
-- [ ] Plan bias vector dimensions
+- [x] Define network structure: input_size → hidden_size → output_size
+- [x] Plan weight matrix dimensions (hint: `(input_size, hidden_size)` for first layer)
+- [x] Plan bias vector dimensions
 
 ### 3. **Initialize Parameters with Matrices**
-- [ ] Replace scalar weights with weight matrices
-- [ ] Replace scalar biases with bias vectors
-- [ ] Use proper weight initialization (try `np.random.randn() * 0.1`)
+- [x] Replace scalar weights with weight matrices
+- [x] Replace scalar biases with bias vectors
+- [x] Use proper weight initialization (try `np.random.randn() * 0.1`)
 
 ### 4. **Implement Matrix Forward Pass**
-- [ ] Rewrite `forward_pass()` to use matrix multiplication (`@` operator)
-- [ ] Ensure ReLU works with matrices (should work automatically with numpy)
-- [ ] Test that output shapes are correct
+- [x] Rewrite `forward_pass()` to use matrix multiplication (`@` operator)
+- [x] Ensure ReLU works with matrices (should work automatically with numpy)
+- [x] Test that output shapes are correct
 
 ### 5. **Update Loss Function**
 - [ ] Modify `loss_calculation()` to handle batch predictions
@@ -48,6 +48,7 @@ import numpy.typing as npt
 np.random.seed(42)  # For reproducibility
 
 n_features = 3
+n_hidden_neurons = 5
 n_samples = 100
 noise_level = 3
 coef = np.array([2.5, -1.5, -0.8])
@@ -71,10 +72,17 @@ X_train, X_test = X[:split_idx], X[split_idx:]
 y_train, y_test = y[:split_idx], y[split_idx:]
 
 # 2. Initialize parameters. In training, these random values will be adjusted through gradient descent
-weight, weight2 = np.random.randn() * 0.5, np.random.randn() * 0.5  # coefficient/slope
-bias, bias2 = 0.1, np.random.randn() * 0.1  # intercept
+weight, weight2 = (
+    np.random.randn(n_features, n_hidden_neurons)
+    * 0.1,  # connects 3 inputs to 5 hidden neurons
+    np.random.randn(n_hidden_neurons, 1) * 0.1,  # connects 5 hidden neurons to 1 output
+)
+bias, bias2 = (
+    np.zeros(5),
+    np.zeros(1),
+)  # one bias per hidden neuron, one bias for the output
 
-# NOTE: how would we organize weights in a matrix?
+# NOTE: How to organize weights in a matrix?
 # Rows could represent input features (3 rows)
 # Columns could represent hidden neurons (5 columns)
 # We go FROM 3 inputs TO 5 hidden neurons
@@ -91,12 +99,16 @@ def ReLU_derivative(value: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
 
 
 def forward_pass(
-    x: npt.NDArray[np.float64], w: float, b: float, w2: float, b2: float
+    x: npt.NDArray[np.float64],
+    w: npt.NDArray[np.float64],
+    b: npt.NDArray[np.float64],
+    w2: npt.NDArray[np.float64],
+    b2: npt.NDArray[np.float64],
 ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
-    hidden_layer_raw_output = x * w + b
+    hidden_layer_raw_output = x @ w + b
     hidden_layer_activated_output = ReLU(hidden_layer_raw_output)
-    final_predictions = hidden_layer_activated_output * w2 + b2
-    # return intermediate valeus for backprop
+    final_predictions = (hidden_layer_activated_output @ w2 + b2).flatten()
+    # return intermediate values for backprop
     return hidden_layer_raw_output, hidden_layer_activated_output, final_predictions
 
 
