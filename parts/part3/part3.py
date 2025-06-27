@@ -1,49 +1,6 @@
 import numpy as np
 import numpy.typing as npt
 
-"""
-## Part 3 TODO List
-
-### 1. **Update Data Generation**
-- [x] Modify data generation to create 2D datasets (multiple input features)
-- [x] Generate batch data with shape `(batch_size, num_features)`
-- [x] Ensure train/test split can handle matrix data
-
-### 2. **Design Network Architecture**
-- [x] Define network structure: input_size → hidden_size → output_size
-- [x] Plan weight matrix dimensions (hint: `(input_size, hidden_size)` for first layer)
-- [x] Plan bias vector dimensions
-
-### 3. **Initialize Parameters with Matrices**
-- [x] Replace scalar weights with weight matrices
-- [x] Replace scalar biases with bias vectors
-- [x] Use proper weight initialization (try `np.random.randn() * 0.1`)
-
-### 4. **Implement Matrix Forward Pass**
-- [x] Rewrite `forward_pass()` to use matrix multiplication (`@` operator)
-- [x] Ensure ReLU works with matrices (should work automatically with numpy)
-- [x] Test that output shapes are correct
-
-### 5. **Update Loss Function**
-- [ ] Modify `loss_calculation()` to handle batch predictions
-- [ ] Ensure MSE works across all examples in batch
-
-### 6. **Implement Matrix Backpropagation**
-- [ ] Rewrite gradient calculations using matrix operations
-- [ ] Update `calculate_gradients()` for matrix weights/biases
-- [ ] Verify gradient shapes match parameter shapes
-
-### 7. **Create Neural Network Class**
-- [ ] Wrap everything in a `NeuralNetwork` class
-- [ ] Add methods: `__init__()`, `forward()`, `backward()`, `train()`
-- [ ] Make layer sizes configurable parameters
-
-### 8. **Test and Validate**
-- [ ] Compare single-example results between Part 2 and Part 3
-- [ ] Test with different batch sizes
-- [ ] Verify training actually reduces loss
-"""
-
 # 1. Generate sample data
 np.random.seed(42)  # For reproducibility
 
@@ -55,8 +12,6 @@ coef = np.array([2.5, -1.5, -0.8])
 true_intercept = 5
 
 # Generate feature matrix
-# Coming from a 1D array where we had 100 numbers (e.g., 100 heights)
-# Now we have 100 examples where each example has 3 numbers aka features (e.g., height, weight, age)
 X = np.random.uniform(0, 10, (n_samples, n_features))
 
 # Generate y values with some noise to mimic "real world" phenomenon
@@ -71,25 +26,10 @@ split_idx = int(0.8 * n_samples)
 X_train, X_test = X[:split_idx], X[split_idx:]
 y_train, y_test = y[:split_idx], y[split_idx:]
 
-# 2. Initialize parameters. In training, these random values will be adjusted through gradient descent
-weight, weight2 = (
-    np.random.randn(n_features, n_hidden_neurons)
-    * 0.1,  # connects 3 inputs to 5 hidden neurons
-    np.random.randn(n_hidden_neurons, 1) * 0.1,  # connects 5 hidden neurons to 1 output
-)
-bias, bias2 = (
-    np.zeros(5),
-    np.zeros(1),
-)  # one bias per hidden neuron, one bias for the output
-
-# NOTE: How to organize weights in a matrix?
-# Rows could represent input features (3 rows)
-# Columns could represent hidden neurons (5 columns)
-# We go FROM 3 inputs TO 5 hidden neurons
-# So we'd have a (3, 5) matrix
+print(f"Data shapes: X_train {X_train.shape}, y_train {y_train.shape}")
 
 
-# 3. Define model functions
+# 2. Define model functions
 def ReLU(value: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
     return np.maximum(0, value)
 
@@ -98,111 +38,194 @@ def ReLU_derivative(value: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
     return (value > 0).astype(float)
 
 
-def forward_pass(
-    x: npt.NDArray[np.float64],
-    w: npt.NDArray[np.float64],
-    b: npt.NDArray[np.float64],
-    w2: npt.NDArray[np.float64],
-    b2: npt.NDArray[np.float64],
-) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
-    hidden_layer_raw_output = x @ w + b
-    hidden_layer_activated_output = ReLU(hidden_layer_raw_output)
-    final_predictions = (hidden_layer_activated_output @ w2 + b2).flatten()
-    # return intermediate values for backprop
-    return hidden_layer_raw_output, hidden_layer_activated_output, final_predictions
+# 3. Neural Network Class
+class NeuralNetwork:
+    def __init__(self, input_size: int, hidden_size: int, output_size: int):
+        """
+        Initialize a simple 2-layer neural network
 
+        Args:
+            input_size: Number of input features
+            hidden_size: Number of neurons in hidden layer
+            output_size: Number of output neurons
+        """
+        self.input_size = input_size
+        self.hidden_size = hidden_size
+        self.output_size = output_size
 
-def loss_calculation(
-    y_pred: npt.NDArray[np.float64], y_true: npt.NDArray[np.float64]
-) -> np.floating:
-    return np.mean((y_pred - y_true) ** 2)
+        # Initialize parameters with proper matrix dimensions
+        self.W1 = np.random.randn(input_size, hidden_size) * 0.1
+        self.b1 = np.zeros(hidden_size)
+        self.W2 = np.random.randn(hidden_size, output_size) * 0.1
+        self.b2 = np.zeros(output_size)
 
-
-def calculate_gradients(
-    x: npt.NDArray[np.float64],
-    y: npt.NDArray[np.float64],
-    y_pred: npt.NDArray[np.float64],
-    hidden_layer_raw: npt.NDArray[np.float64],
-    hidden_layer_activated: npt.NDArray[np.float64],
-    output_weight: float,
-) -> dict[str, float]:
-    # Calculate all gradients via backpropagation
-    num_inputs = x.size
-
-    # Output layer gradients (calculated direct from loss func)
-    output_weight_gradient = (
-        -2 / num_inputs * np.sum(hidden_layer_activated * (y - y_pred))
-    )
-    output_bias_gradient = -2 / num_inputs * np.sum(y - y_pred)
-
-    # Hidden layer gradients (using chain rule)
-    loss_gradient_wrt_predictions = -2 * (y - y_pred) / num_inputs
-    hidden_activation_gradient = ReLU_derivative(hidden_layer_raw)
-
-    loss_gradient_wrt_hidden_activated = loss_gradient_wrt_predictions * output_weight
-    loss_gradient_wrt_hidden_raw = (
-        loss_gradient_wrt_hidden_activated * hidden_activation_gradient
-    )
-
-    hidden_weight_gradient = np.sum(loss_gradient_wrt_hidden_raw * x)
-    hidden_bias_gradient = np.sum(loss_gradient_wrt_hidden_raw)
-
-    return {
-        "hidden_weight": hidden_weight_gradient,
-        "hidden_bias": hidden_bias_gradient,
-        "output_weight": output_weight_gradient,
-        "output_bias": output_bias_gradient,
-    }
-
-
-def update_parameters(
-    hidden_weight: float,
-    hidden_bias: float,
-    output_weight: float,
-    output_bias: float,
-    gradients: dict[str, float],
-    learning_rate: float,
-) -> tuple[float, float, float, float]:
-    """Update all parameters using calculated gradients"""
-    updated_hidden_weight = hidden_weight - learning_rate * gradients["hidden_weight"]
-    updated_hidden_bias = hidden_bias - learning_rate * gradients["hidden_bias"]
-    updated_output_weight = output_weight - learning_rate * gradients["output_weight"]
-    updated_output_bias = output_bias - learning_rate * gradients["output_bias"]
-
-    return (
-        updated_hidden_weight,
-        updated_hidden_bias,
-        updated_output_weight,
-        updated_output_bias,
-    )
-
-
-# 4. Training loop
-# Hyperparameters
-learning_rate = 0.01
-iterations = 1000
-
-loss_history = []
-
-for i in range(iterations):
-    hidden_layer_raw, hidden_layer_activated, y_pred = forward_pass(
-        X_train, weight, bias, weight2, bias2
-    )
-    loss = loss_calculation(y_pred, y_train)
-    loss_history.append(loss)
-
-    gradients = calculate_gradients(
-        X_train, y_train, y_pred, hidden_layer_raw, hidden_layer_activated, weight2
-    )
-
-    weight, bias, weight2, bias2 = update_parameters(
-        weight, bias, weight2, bias2, gradients, learning_rate
-    )
-
-    if (i + 1) % 100 == 0:
+        print(f"Initialized network: {input_size} -> {hidden_size} -> {output_size}")
         print(
-            f"Iteration {i + 1}/{iterations}, Loss: {loss:.4f}, Weight: {weight:.4f}, Bias: {bias:.4f}"
+            f"Parameter shapes: W1{self.W1.shape}, b1{self.b1.shape}, W2{self.W2.shape}, b2{self.b2.shape}"
         )
 
-print(f"Final parameters: Weight = {weight:.4f}, Bias = {bias:.4f}")
-print(f"Final output layer: Weight2 = {weight2:.4f}, Bias2 = {bias2:.4f}")
+    def forward(
+        self, X: npt.NDArray[np.float64]
+    ) -> tuple[
+        npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]
+    ]:
+        """
+        Forward pass through the network
+
+        Args:
+            X: Input data of shape (batch_size, input_size)
+
+        Returns:
+            hidden_raw: Raw hidden layer values (before activation)
+            hidden_activated: Hidden layer values after ReLU
+            output: Final network predictions
+        """
+        # Hidden layer
+        hidden_raw = X @ self.W1 + self.b1  # Shape: (batch_size, hidden_size)
+        hidden_activated = ReLU(hidden_raw)  # Shape: (batch_size, hidden_size)
+
+        # Output layer
+        output = (
+            hidden_activated @ self.W2 + self.b2
+        ).flatten()  # Shape: (batch_size,)
+
+        return hidden_raw, hidden_activated, output
+
+    def loss(
+        self, y_pred: npt.NDArray[np.float64], y_true: npt.NDArray[np.float64]
+    ) -> np.floating:
+        return np.mean((y_pred - y_true) ** 2)
+
+    def backward(
+        self,
+        X: npt.NDArray[np.float64],
+        y_true: npt.NDArray[np.float64],
+        y_pred: npt.NDArray[np.float64],
+        hidden_raw: npt.NDArray[np.float64],
+        hidden_activated: npt.NDArray[np.float64],
+    ) -> dict[str, npt.NDArray[np.float64]]:
+        batch_size = X.shape[0]
+
+        loss_wrt_predictions = (
+            -2 * (y_true - y_pred) / batch_size
+        )  # Shape: (batch_size,)
+
+        # Gradient for W2 (output weights)
+        W2_gradient = hidden_activated.T @ loss_wrt_predictions.reshape(
+            -1, 1
+        )  # Shape: (hidden_size, output_size)
+
+        # Gradient for b2 (output bias)
+        b2_gradient = np.sum(loss_wrt_predictions)  # Scalar -> reshape
+        b2_gradient = np.array([b2_gradient])  # Shape: (output_size,)
+
+        # How much does loss change with respect to hidden activations?
+        loss_wrt_hidden_activated = (
+            loss_wrt_predictions.reshape(-1, 1) @ self.W2.T
+        )  # Shape: (batch_size, hidden_size)
+
+        hidden_activation_derivative = ReLU_derivative(
+            hidden_raw
+        )  # Shape: (batch_size, hidden_size)
+        loss_wrt_hidden_raw = (
+            loss_wrt_hidden_activated * hidden_activation_derivative
+        )  # Shape: (batch_size, hidden_size)
+
+        # Gradient for W1 (hidden weights)
+        W1_gradient = X.T @ loss_wrt_hidden_raw  # Shape: (input_size, hidden_size)
+
+        # Gradient for b1 (hidden bias)
+        b1_gradient = np.sum(loss_wrt_hidden_raw, axis=0)  # Shape: (hidden_size,)
+
+        return {
+            "W1": W1_gradient,
+            "b1": b1_gradient,
+            "W2": W2_gradient,
+            "b2": b2_gradient,
+        }
+
+    def update_parameters(
+        self, gradients: dict[str, npt.NDArray[np.float64]], learning_rate: float
+    ):
+        """Update all parameters using gradient descent"""
+        self.W1 -= learning_rate * gradients["W1"]
+        self.b1 -= learning_rate * gradients["b1"]
+        self.W2 -= learning_rate * gradients["W2"]
+        self.b2 -= learning_rate * gradients["b2"]
+
+    def train(
+        self,
+        X: npt.NDArray[np.float64],
+        y: npt.NDArray[np.float64],
+        learning_rate: float = 0.01,
+        epochs: int = 1000,
+        verbose: bool = True,
+    ):
+        """
+        Train the neural network
+
+        Args:
+            X: Training data
+            y: Training labels
+            learning_rate: Step size for gradient descent
+            epochs: Number of training iterations
+            verbose: Whether to print progress
+        """
+        loss_history = []
+
+        for epoch in range(epochs):
+            # Forward pass
+            hidden_raw, hidden_activated, y_pred = self.forward(X)
+
+            # Calculate loss
+            current_loss = self.loss(y_pred, y)
+            loss_history.append(current_loss)
+
+            # Backward pass
+            gradients = self.backward(X, y, y_pred, hidden_raw, hidden_activated)
+
+            # Update parameters
+            self.update_parameters(gradients, learning_rate)
+
+            # Print progress
+            if verbose and (epoch + 1) % 100 == 0:
+                print(f"Epoch {epoch + 1}/{epochs}, Loss: {current_loss:.6f}")
+
+        return loss_history
+
+    def predict(self, X: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+        """Make predictions on new data"""
+        _, _, predictions = self.forward(X)
+        return predictions
+
+
+# 4. Create and train the network
+print("Creating neural network...")
+nn = NeuralNetwork(input_size=n_features, hidden_size=n_hidden_neurons, output_size=1)
+
+print("\nTraining network...")
+loss_history = nn.train(X_train, y_train, learning_rate=0.01, epochs=1000)
+
+print(f"\nFinal training loss: {loss_history[-1]:.6f}")
+
+# 5. Test the network
+print("\nTesting network...")
+train_predictions = nn.predict(X_train)
+test_predictions = nn.predict(X_test)
+
+train_loss = nn.loss(train_predictions, y_train)
+test_loss = nn.loss(test_predictions, y_test)
+
+print(f"Training loss: {train_loss:.6f}")
+print(f"Test loss: {test_loss:.6f}")
+
+# 6. Show some example predictions
+print("\nExample predictions vs actual (first 5 test examples):")
+for i in range(5):
+    print(f"Predicted: {test_predictions[i]:.2f}, Actual: {y_test[i]:.2f}")
+
+print(f"\nNetwork architecture summary:")
+print(f"Input features: {nn.input_size}")
+print(f"Hidden neurons: {nn.hidden_size}")
+print(f"Output neurons: {nn.output_size}")
+print(f"Total parameters: {nn.W1.size + nn.b1.size + nn.W2.size + nn.b2.size}")
